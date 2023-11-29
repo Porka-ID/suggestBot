@@ -1,0 +1,17 @@
+{
+  "name": "firstproject",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sapphire/framework": "^4.8.2",
+    "discord.js": "^14.14.1"
+  },
+  "devDependencies": {},
+  "description": ""
+}
