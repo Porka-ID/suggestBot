@@ -2,11 +2,11 @@ const { Command } = require('@sapphire/framework')
 const { ApplicationCommandType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const { suggestChannel } = require("../../config.json")
 
-module.exports = class AcceptSuggest extends Command {
+module.exports = class DenySuggest extends Command {
     constructor(ctx, options) {
         super(ctx, {
             ...options,
-            description: "Accepter une suggestion",
+            description: "Refuser une suggestion",
             requiredUserPermissions: [PermissionFlagsBits.Administrator]
         });
     }
@@ -14,17 +14,14 @@ module.exports = class AcceptSuggest extends Command {
     registerApplicationCommands(registry) {
         registry.registerContextMenuCommand((builder) =>
             builder
-                .setName("Accepter la suggestion")
+                .setName("Refuser la suggestion")
                 .setType(ApplicationCommandType.Message)
         );
     }
 
-    async contextMenuRun(interaction) {
+    contextMenuRun(interaction) {
         console.log(interaction.options.data[0].message.embeds[0])
-        let messageSuggest = interaction.options.data[0].message
-        if (messageSuggest.partial) {
-            messageSuggest = await messageSuggest.fetch().catch(console.error)
-        }
+        const messageSuggest = interaction.options.data[0].message
         const oldEmbed = messageSuggest.embeds[0]
         if (oldEmbed && interaction.channelId === suggestChannel) {
             const newEmbedToSend = new EmbedBuilder()
@@ -32,7 +29,7 @@ module.exports = class AcceptSuggest extends Command {
                     name: oldEmbed.data.author.name,
                     iconURL: oldEmbed.data.author.icon_url,
                 })
-                .setTitle("La suggestion a été validée")
+                .setTitle("La suggestion a été refusée")
                 .setDescription(oldEmbed.data.description)
                 .addFields(
                     {
@@ -46,7 +43,7 @@ module.exports = class AcceptSuggest extends Command {
                         inline: true
                     },
                 )
-                .setColor("#079400")
+                .setColor("#941e1e")
                 .setFooter({
                     text: interaction.client.user.displayName,
                     iconURL: interaction.client.user.displayAvatarURL(),
@@ -54,14 +51,14 @@ module.exports = class AcceptSuggest extends Command {
                 .setTimestamp();
             messageSuggest.edit({ embeds: [newEmbedToSend] })
             if (messageSuggest.hasThread) {
-                messageSuggest.thread.setLocked(true)
                 messageSuggest.thread.send({
                     content: "La suggestion a été refusée !"
                 })
+                messageSuggest.thread.setLocked(true)
             }
-            messageSuggest.thread
+
             interaction.reply({
-                content: "La suggestion a été acceptée avec succès",
+                content: "La suggestion a été refusée avec succès",
                 ephemeral: true
             }).catch(console.error)
 

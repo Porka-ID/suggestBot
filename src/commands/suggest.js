@@ -1,22 +1,22 @@
 const { Command } = require('@sapphire/framework')
-const {suggestChannel, botName} = require("../../config.json");
+const { suggestChannel, botName } = require("../../config.json");
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = class SuggestCommand extends Command {
     constructor(ctx, options) {
         super(ctx, {
-            ...options, 
+            ...options,
             description: "Faire une suggestion"
         });
     }
 
     registerApplicationCommands(registry) {
-        registry.registerChatInputCommand((builder) => 
+        registry.registerChatInputCommand((builder) =>
             builder
                 .setName(this.name)
                 .setDescription(this.description)
                 .addStringOption((option) =>
-                    option 
+                    option
                         .setName("suggestion")
                         .setDescription("La suggestion que tu souhaites faire")
                 )
@@ -38,20 +38,20 @@ module.exports = class SuggestCommand extends Command {
             .setTitle("Une nouvelle suggestion est arrivée")
             .addFields(
                 {
-                name: "✅",
-                value: "0",
-                inline: true
+                    name: "✅",
+                    value: "0",
+                    inline: true
                 },
                 {
-                name: "❌",
-                value: "0",
-                inline: true
+                    name: "❌",
+                    value: "0",
+                    inline: true
                 },
             )
             .setDescription(suggestion)
             .setColor("#afa800")
             .setFooter({
-                text:  interaction.client.user.displayName,
+                text: interaction.client.user.displayName,
                 iconURL: interaction.client.user.displayAvatarURL(),
             })
             .setTimestamp();
@@ -61,6 +61,11 @@ module.exports = class SuggestCommand extends Command {
         if (msgSent) {
             await msgSent.react("✅")
             await msgSent.react("❌")
+            await msgSent.startThread({
+                name: `Une nouvelle suggestion de ${interaction.user.displayName}`,
+                autoArchiveDuration: 10080,
+                reason: "Je suis une raison"
+            })
         }
         interaction.reply({
             content: "Oui c'est michel, c'est encore moi, enft j'ai bien envoyé la suggestion !!!!! QUOICOUBEH",
