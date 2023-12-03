@@ -47,10 +47,20 @@ module.exports = class ready extends Listener {
             .setTimestamp();
 
         row.addComponents(selectMenu)
-        channel.send({
-            embeds: [embedCreate],
-            components: [row]
+        const lastMessageId = channel.messages.channel.lastMessageId
+        if (lastMessageId) {
+            const lastMessage = await channel.messages.fetch(channel.messages.channel.lastMessageId)
+            lastMessage.edit({
+                embeds: [embedCreate],
+                components: [row]
+            })
+        } else {
+            channel.send({
+                embeds: [embedCreate],
+                components: [row]
 
-        })
+            })
+        }
+
     }
 }

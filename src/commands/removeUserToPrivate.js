@@ -6,7 +6,7 @@ module.exports = class addUserToPrivate extends Command {
     constructor(ctx, options) {
         super(ctx, {
             ...options,
-            description: "Ajouter au S.P",
+            description: "Enlever au S.P",
         });
     }
 
@@ -20,11 +20,15 @@ module.exports = class addUserToPrivate extends Command {
 
     async contextMenuRun(interaction) {
         const voiceChannel = await interaction.member.voice.channel
+        const userPicked = interaction.options.data[0].member
+        const userPickedId = interaction.options.data[0].user.id
         if (voiceChannel && interaction.member.roles.cache.has("1180802256237498369")) {
-            console.log(interaction.options.data[0].user.id)
-            voiceChannel.permissionOverwrites.edit(interaction.options.data[0].user.id, { ViewChannel: true })
+            voiceChannel.permissionOverwrites.edit(userPickedId, { ViewChannel: false })
+            if (userPicked.voice.channel && userPicked.voice.channel === voiceChannel) {
+                userPicked.voice.disconnect()
+            }
             interaction.reply({
-                content: `<@${interaction.options.data[0].user.id}> voit désormais le salon !`,
+                content: `<@${userPickedId}> ne voit désormais plus le salon !`,
                 ephemeral: true
             })
         } else {

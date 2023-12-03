@@ -3,14 +3,14 @@ const { botID, suggestChannel } = require("../../config.json")
 const { EmbedBuilder } = require('discord.js');
 console.log("test")
 module.exports = class messageReactionAdd extends Listener {
-  constructor(context, options) {
-    super(context, {
-        ...options,
-        event: 'messageReactionAdd'
-    });
-  }
+    constructor(context, options) {
+        super(context, {
+            ...options,
+            event: 'messageReactionAdd'
+        });
+    }
 
-    async run(reaction, user) { 
+    async run(reaction, user) {
         if (reaction.partial) {
             reaction = await reaction.fetch().catch(console.error)
         }
@@ -20,11 +20,11 @@ module.exports = class messageReactionAdd extends Listener {
                 if (reaction.message.embeds[0].fields[i].name === reaction.emoji.name) {
                     embedReactionned.data.fields[i].value = `${reaction.count - 1}`
                 }
-                
-            }
-            console.log(embedReactionned.data.fields)
 
-            reaction.message.edit({embeds: [embedReactionned]}).catch(console.error)
+            }
+
+
+            reaction.message.edit({ embeds: [embedReactionned] }).catch(console.error)
         }
-    } 
+    }
 }

@@ -33,11 +33,27 @@ module.exports = class selectChannel extends InteractionHandler {
                         id: interaction.user.id,
                         allow: [PermissionsBitField.Flags.ViewChannel]
                     }]
-                const privateVoice = await interaction.member.guild.channels.create(newVoice)
-                interaction.reply({
-                    content: `Votre salon privé ( ${privateVoice.url} )`,
-                    ephemeral: true
-                })
+                let role = await interaction.guild.roles.cache.find(role => role.name === "Private")
+                if (!role) {
+                    role = await interaction.guild.roles.create({ name: "Private" })
+                    console.log("heho")
+                }
+
+
+                if (!interaction.member.roles.cache.has(role.id)) {
+                    await interaction.member.roles.add(role)
+                    const privateVoice = await interaction.member.guild.channels.create(newVoice)
+                    interaction.reply({
+                        content: `Votre salon privé ( ${privateVoice.url} )`,
+                        ephemeral: true
+                    })
+                } else {
+                    interaction.reply({
+                        content: "Vous avez déja un salon privé !",
+                        ephemeral: true,
+                    })
+                }
+
 
                 break;
             case 'public':
