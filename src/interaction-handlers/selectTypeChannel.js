@@ -36,7 +36,6 @@ module.exports = class selectChannel extends InteractionHandler {
                 let role = await interaction.guild.roles.cache.find(role => role.name === "Private")
                 if (!role) {
                     role = await interaction.guild.roles.create({ name: "Private" })
-                    console.log("heho")
                 }
 
 
@@ -47,6 +46,16 @@ module.exports = class selectChannel extends InteractionHandler {
                         content: `Votre salon privé ( ${privateVoice.url} )`,
                         ephemeral: true
                     })
+                    setTimeout(() => {
+                        const usrIdInVoice = []
+                        privateVoice.members.map(user => {
+                            usrIdInVoice.push(user.id)
+                        })
+                        if (!usrIdInVoice[0]) {
+                            privateVoice.delete() // Usr not in voice
+                            interaction.member.roles.remove(role)
+                        }
+                    }, 7500)
                 } else {
                     interaction.reply({
                         content: "Vous avez déja un salon privé !",
@@ -65,6 +74,15 @@ module.exports = class selectChannel extends InteractionHandler {
                     ephemeral: true
                 })
 
+                setTimeout(() => {
+                    const usrIdInVoice = []
+                    publicVoice.members.map(user => {
+                        usrIdInVoice.push(user.id)
+                    })
+                    if (!usrIdInVoice[0]) {
+                        publicVoice.delete() // Usr not in voice
+                    }
+                }, 7500)
                 break;
 
         }
