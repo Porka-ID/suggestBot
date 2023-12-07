@@ -43,9 +43,10 @@ module.exports = class selectChannel extends InteractionHandler {
                     await interaction.member.roles.add(role)
                     const privateVoice = await interaction.member.guild.channels.create(newVoice)
                     interaction.reply({
-                        content: `Votre salon privé ( ${privateVoice.url} )`,
+                        content: `Votre salon privé ( ${privateVoice.url} ) \nJe t'ai envoyé un MP avec les infos pratiques ;) `,
                         ephemeral: true
                     })
+                    interaction.member.send("Hello !\nTu viens de créer un salon privé !.\nPour ajouter une personne à ton salon, et qu'il puisse le voir tu peux faire clic droit sur cette personne dans le serveur et faire 'Ajouter au S.P'\nMais si souhaite l'inverse tu peux faire 'Enlever du S.P'")
                     setTimeout(() => {
                         const usrIdInVoice = []
                         privateVoice.members.map(user => {
