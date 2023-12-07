@@ -1,6 +1,6 @@
 const { SapphireClient, ApplicationCommandRegistries, RegisterBehavior } = require('@sapphire/framework')
 const { GatewayIntentBits, Partials } = require("discord.js")
-const { token } = require("../config.json")
+const { token } = require("../tçken.json")
 
 const client = new SapphireClient({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildVoiceStates],
