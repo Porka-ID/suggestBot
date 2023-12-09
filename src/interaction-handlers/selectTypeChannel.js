@@ -23,6 +23,11 @@ module.exports = class selectChannel extends InteractionHandler {
         switch (interaction.values[0]) {
 
             case 'private':
+                let privateRole = await interaction.guild.roles.cache.find(role => role.name === "Private")
+                if (!privateRole) {
+                    privateRole = await interaction.guild.roles.create({ name: "Private" })
+                }
+                console.log(privateRole.id)
                 newVoice["name"] = `🔒 Salon de ${interaction.user.displayName}`
                 newVoice["permissionOverwrites"] = [
                     {
@@ -30,17 +35,13 @@ module.exports = class selectChannel extends InteractionHandler {
                         deny: [PermissionsBitField.Flags.ViewChannel]
                     },
                     {
-                        id: interaction.user.id,
-                        allow: [PermissionsBitField.Flags.ViewChannel]
+                        id: privateRole.id,
+                        allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.ManageChannels]
                     }]
-                let role = await interaction.guild.roles.cache.find(role => role.name === "Private")
-                if (!role) {
-                    role = await interaction.guild.roles.create({ name: "Private" })
-                }
 
 
-                if (!interaction.member.roles.cache.has(role.id)) {
-                    await interaction.member.roles.add(role)
+                if (!interaction.member.roles.cache.has(privateRole.id)) {
+                    await interaction.member.roles.add(privateRole)
                     const privateVoice = await interaction.member.guild.channels.create(newVoice)
                     interaction.reply({
                         content: `Votre salon privé ( ${privateVoice.url} ) \nJe t'ai envoyé un MP avec les infos pratiques ;) `,
@@ -54,7 +55,7 @@ module.exports = class selectChannel extends InteractionHandler {
                         })
                         if (!usrIdInVoice[0]) {
                             privateVoice.delete() // Usr not in voice
-                            interaction.member.roles.remove(role)
+                            interaction.member.roles.remove(privateRole)
                         }
                     }, 7500)
                 } else {

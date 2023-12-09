@@ -23,7 +23,7 @@ module.exports = class addUserToPrivate extends Command {
         const userPicked = interaction.options.data[0].member
         const userPickedId = interaction.options.data[0].user.id
         if (voiceChannel && interaction.member.roles.cache.has("1180802256237498369")) {
-            voiceChannel.permissionOverwrites.edit(userPickedId, { ViewChannel: false })
+            voiceChannel.permissionOverwrites.edit(userPickedId, { ViewChannel: null })
             if (userPicked.voice.channel && userPicked.voice.channel === voiceChannel) {
                 userPicked.voice.disconnect()
             }

@@ -10,8 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "@sapphire/framework": "^4.8.2",
-    "discord.js": "^14.14.1"
+    "discord.js": "^14.14.1",
+    "mongoose": "^8.0.3"
   },
-  "devDependencies": {},
   "description": ""
 }

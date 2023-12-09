@@ -12,9 +12,9 @@ module.exports = class ready extends Listener {
 
     async run(oldState, newState) {
         const rolePrivate = await oldState.guild.roles.fetch("1180802256237498369")
-        if (newState.channelId === null && oldState.member.roles.cache.has('1180802256237498369')) {
+        if (newState.channelId !== oldState.channelId && oldState.member.roles.cache.has('1180802256237498369')) {
             const channelLeaved = await oldState.guild.channels.fetch(oldState.channelId)
-            if (channelLeaved.members.size > 0) {
+            if (!channelLeaved.members) {
                 const idsUser = channelLeaved.members.keys()
                 const firstId = idsUser.next().value
                 const userToAddPrivate = await oldState.guild.members.fetch(firstId)

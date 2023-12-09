@@ -11,7 +11,7 @@ Ce bot sert à plusieurs choses. A la base, il ne servait qu'a faire des suggest
 * Création de salon publique ou/et privé
     * Gestion de hôte d'un salon privé
     * Suppression automatique des salons lorsqu'il y a personne (on working)
-    * Rattribution d'un hôte pour un salon privé (Lorsque l'hôte part) (on working)
+    * Rattribution d'un hôte pour un salon privé (Lorsque l'hôte part)
     * Gestion des permissions du salon par l'hôte (on working)
 
 ### Futures fonctionalités
